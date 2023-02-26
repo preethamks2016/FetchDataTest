@@ -66,6 +66,7 @@ Connect to postgres and check:
 //password: postgres
  postgres=# \dt //list the tables
 ```
+### Main program
 Run the below command to compile and execute our Java program:
 ```
 mvn compile exec:java -Dexec.mainClass="org.fetch.FetchTest" 
@@ -104,9 +105,11 @@ What other components would you want to add to make this production ready?
 
 How can this application scale with a growing dataset.
 - spark - transformations
+- parallel insert 
 
 How can PII be recovered later on?
 - base64 decoding
 
 What are the assumptions you made?
 - sticking to existing user_logins table schema
+- appversion
