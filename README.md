@@ -85,30 +85,34 @@ A new row has been inserted.
 [INFO] ------------------------------------------------------------------------
 ```
 ## Next Steps
-- handle nullable values
-- can add a validator to check the character limits, datatypes before inserting to table
-- integer concat - change to float
-- can use better masking such as SHA
-- writing can be done in parallel using a threadpool
-- mapping from json to object can be done better with Named annotations
-- better packaging
-- modules for service, client, data , mapper etc
-  arguments / config file for AWS, postgres etc
-
+- can use better masking algorithms -like SHA hashing etc
+- inserting records to postgres db can be done in-parallel asynchronously by using ThreadPool Executor.
+- Values such as postgres url, aws url etc can be provided as arguments or reading from a config file.
+- Can add a validator to validate the data such as checking the character limits, null values, datatypes etc, before inserting to table.
+- Mapping from json to object can be done better by naming the fields using @JsonProperty annotations
+- better packaging of the service with modules for service, postgres client, data transfer objects, mapper etc
 
 ## Questions
 How would you deploy this application in production?
-- docker kubernetes 
+- We would need to setup a build and deploy pipeline. For example Jenkins can be used to build, compile and push the executable/jar
+to some repository. Deployment can be done using scripting tools such as ansible, chef, puppet to copy the executables to the VMs and run them.
+Additionally the VMs would need to have the prerequisites installed which can again be done using ansible scripts.
+- A better way to deploy would be by dockerising the application and deploying it using Kubernetes and writing helm charts
+to manage the deployment, configs etc.
 
 What other components would you want to add to make this production ready?
-- docker kubernetes
+- We can dockerise the application. We would need write a DockerFile using Java / Maven as base image with steps to compile and execute program.
+- We would need to write a helm chart to deploy it on Kubernetes. And write config files for connecting to upstream and downstream services such as 
+AWS SQS, postgres database.
+- modules for service, postgres client, data transfer objects
 
 How can this application scale with a growing dataset.
 - spark - transformations
+- Auto-scaling policies can be setup easily in Kubernetes via helm charts. 
 - parallel insert 
 
 How can PII be recovered later on?
-- base64 decoding
+- base64 decoding, script
 
 What are the assumptions you made?
 - sticking to existing user_logins table schema
