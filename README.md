@@ -96,24 +96,28 @@ A new row has been inserted.
 How would you deploy this application in production?
 - We would need to setup a build and deploy pipeline. For example Jenkins can be used to build, compile and push the executable/jar
 to some repository. Deployment can be done using scripting tools such as ansible, chef, puppet to copy the executables to the VMs and run them.
-Additionally the VMs would need to have the prerequisites installed which can again be done using ansible scripts.
-- A better way to deploy would be by dockerising the application and deploying it using Kubernetes and writing helm charts
-to manage the deployment, configs etc.
+Additionally the VMs would need to have the prerequisites installed which can again be done using ansible scripts. We could also dockerise the application and deploy it on a Kubernetes cluster.
+- A better suited approach would to write a spark application and deploy our application on a Spark cluster. This would require setting up a spark cluster 
+and submitting your application using spark-submit. We'll need to provide the path to the JAR file and any additional configuration options the application requires.
 
 What other components would you want to add to make this production ready?
 - We can dockerise the application. We would need write a DockerFile using Java / Maven as base image with steps to compile and execute program.
 - We would need to write a helm chart to deploy it on Kubernetes. And write config files for connecting to upstream and downstream services such as 
 AWS SQS, postgres database.
-- modules for service, postgres client, data transfer objects
+- Separate modules for service, postgres client, data transfer objects
+- Incorporate logging, version control, running the application under different load scenarios to ensure that it can handle high traffic.
 
 How can this application scale with a growing dataset.
-- spark - transformations
-- Auto-scaling policies can be setup easily in Kubernetes via helm charts. 
-- parallel insert 
+- This application is best suited for spark since we are basically doing a stateless data transformation.
+- By deploying it on a spark cluster we should be able to scale easily by adding new executor nodes to the cluster.
+- If we use Kubernetes, auto-scaling policies can be setup easily in Kubernetes via helm charts.
+- We are assuming that the input SQS queue is well partitioned and we are able to have a good read throughput.
+- Additionally, we can parallelly insert records using multi-threading.
 
 How can PII be recovered later on?
-- base64 decoding, script
+- We can use a Base64 decoder to decode the masked values: ***Base64.getDecoder().decode(encodedString)***
+- We can write a script to read data from postgres and decode the masked values.
 
 What are the assumptions you made?
-- sticking to existing user_logins table schema
-- appversion
+- I am adhering to the existing **user_logins** table schema. That has integer field for the appversion. Since appversion is 
+a string I am removing the dots (delimiter) and concatenating the values to make it an integer.
