@@ -98,7 +98,7 @@ How would you deploy this application in production?
 - We would need to setup a build and deploy pipeline. For example Jenkins can be used to build, compile and push the executable/jar
 to some repository. Deployment can be done using scripting tools such as ansible, chef, puppet to copy the executables to the VMs and run them.
 Additionally the VMs would need to have the prerequisites installed which can again be done using ansible scripts. We could also dockerise the application and deploy it on a Kubernetes cluster.
-- A better suited approach would to write a spark application and deploy our application on a Spark cluster. This would require setting up a spark cluster 
+- Another approach would be to write a spark application and deploy on a Spark cluster. This would require setting up a spark cluster 
 and submitting your application using spark-submit. We'll need to provide the path to the JAR file and any additional configuration options the application requires.
 
 What other components would you want to add to make this production ready?
@@ -109,11 +109,12 @@ AWS SQS, postgres database.
 - Incorporate logging, version control, running the application under different load scenarios to ensure that it can handle high traffic.
 
 How can this application scale with a growing dataset.
-- This application is best suited for spark since we are basically doing a stateless data transformation.
+- This application is best suited for spark since we are basically doing a stateless data transformation. Spark is best for building data processing
+pipelines that can handle large volumes of data, data ingestion / transformation.
 - By deploying it on a spark cluster we should be able to scale easily by adding new executor nodes to the cluster.
 - If we use Kubernetes, auto-scaling policies can be setup easily in Kubernetes via helm charts.
 - We are assuming that the input SQS queue is well partitioned and we are able to have a good read throughput.
-- Additionally, we can parallelly insert records using multi-threading.
+- Additionally, we can have further parallelism within a pod by using multi-threading for paralelly inserting records to postgres.
 
 How can PII be recovered later on?
 - We can use a Base64 decoder to decode the masked values: ***Base64.getDecoder().decode(encodedString)***
