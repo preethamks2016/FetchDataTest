@@ -31,7 +31,7 @@ You will also need the following installed on your local machine
 - docker -- https://docs.docker.com/get-docker/
 - docker-compose -- https://docs.docker.com/compose/gettingstarted/
 - pip install awscli-local
-- pip install aws-cli 
+- pip install awscli 
 - Psql - install https://www.postgresql.org/download/
 
 Docker images have been given as part of the project
@@ -43,6 +43,7 @@ docker pull fetchdocker/data-takehome-localstack
 
 ## Steps to Run:
 
+### Command Instructions
 ### Command Instructions
 Clone this repository and 'cd' into the project working directory - **FetchDataTest**
 
